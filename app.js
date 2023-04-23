@@ -18,15 +18,15 @@ const helmet = require('helmet');
 
 const mongoSanitize = require('express-mongo-sanitize');
 
-const secret = process.env.SECRET || 'kidnamedfinger'
+const secret =  'kidnamedfinger'
 
 const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const MongoStore = require('connect-mongo');
-const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp'
+const dbUrl = process.env.DB_URL ||  'mongodb://127.0.0.1:27017/yelp-camp'
 // dbUrl
-mongoose.connect(dbUrl, { useUnifiedTopology: true,  useNewUrlParser: true})
+mongoose.connect(dbUrl, { useUnifiedTopology: true,  useNewUrlParser: true,createIndexes: true })
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -76,7 +76,7 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 app.use(helmet());
-
+console.log(process.env.DB_URL)
 
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
